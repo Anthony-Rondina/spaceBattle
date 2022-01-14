@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+#container{
+    /* border: red solid; */
+    height: 100vh;
+    background-image: url(https://i.imgur.com/Gbyfnb8.png);
+background-color:  #000 ;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: .5fr 2fr 1fr;
+    grid-template-areas:
+	"header header header"
+	"aside   main   sidebar"
+	"aside footer sidebar"
+}
+#header{
+    /* border: solid green; */
+    background-color: #457b9d;
+    grid-area: header;
+}
+#aside{
+    /* border: solid blue; */
+    grid-area: aside; 
+}
+#main{
+    margin-top: 10px;
+    /* border: solid brown; */
+    grid-area: main;
+}
+#sidebar{
+    /* border: solid darkolivegreen; */
+    grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+#footer{
+    /* border: solid darkviolet; */
+    grid-area: footer;
+}
+#display{
+    /* border: darkturquoise solid; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 250px 250px;
+    grid-template-areas:
+	"pstat astat"
+	"pship aship"
+}
+#pStat{
+    /* border: darkgoldenrod solid; */
+    grid-area: pstat;
+}
+#aStat{
+    /* border: darkgreen solid; */
+    grid-area: astat;
+}
+#pShip{
+    /* border: darkmagenta solid; */
+    grid-area: pship;
+}
+#aShip{
+    /* border: darkorchid solid; */
+    grid-area: aship;
+}
+
+#sidebar img {
+    margin-left: 15%;
+    max-width: 80%;
+    max-height: 60%;
+}
+.background{
+    background-color:rgba(123, 19, 19, 0.8);
+    border-radius: 15%;
+    border: solid 5px rgba(112, 112, 113, 0.9);
+    width: 15%;
+    height: 20%;
+    justify-content: center; 
+}
+
+#playerShip img {
+    margin-left: 15%;
+    margin-top: 5%;
+    max-width: 70%;
+}
+
+#alienShip img {
+    margin-left: 5%;
+    margin-top: 10%;
+    max-width: 90%;
+    min-width: 80%
+}
+#pStat{
+    margin-left: -10px;
+    background-color:rgba(19, 123, 26, 0.8);
+    border-radius: 15%;
+    border: solid 5px rgba(112, 112, 113, 0.9);
+    width: 100%;
+    height: 80%;
+    justify-content: center; 
+    text-align: center;  
+    color: white;
+    font-size: 2rem;
+}
+#aStat{
+    margin-left: 10px;
+    background-color:rgba(123, 29, 19, 0.8);
+    border-radius: 15%;
+    border: solid 5px rgba(112, 112, 113, 0.9);
+    width: 100%;
+    height: 80%;
+    justify-content: center; 
+    text-align: center;  
+    color: white;
+    font-size: 2rem;
+}
+.hidden {
+    display: none;
+}
+button {
+    width: 30%;
+    min-height: 35%;
+    font-size: 2rem;
+    display: inline;
+}
