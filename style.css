@@ -23,6 +23,19 @@ background-color:  #000 ;
 #aside{
     /* border: solid blue; */
     grid-area: aside; 
+    margin-left: -10px;
+    background-color:rgba(69, 81, 70, 0.7);
+    border-radius: 15%;
+    border: solid 5px rgba(112, 112, 113, 0.9);
+    width: 90%;
+    height: 55%;  
+    color: white;
+    font-size: 1.3rem;
+    margin-top: 10px
+}
+#commands {
+    text-align: left;
+    margin-left: 30%;
 }
 #main{
     margin-top: 10px;
@@ -102,7 +115,7 @@ background-color:  #000 ;
     justify-content: center; 
     text-align: center;  
     color: white;
-    font-size: 2rem;
+    font-size: 1.7rem;
 }
 #aStat{
     margin-left: 10px;
@@ -114,7 +127,7 @@ background-color:  #000 ;
     justify-content: center; 
     text-align: center;  
     color: white;
-    font-size: 2rem;
+    font-size: 1.7rem;
 }
 .hidden {
     display: none;

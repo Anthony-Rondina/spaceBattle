@@ -1,18 +1,31 @@
+let input = ''
+
+
 //Declare Playership Class
 class PlayerShip {
-    constructor(hull = 200, firepower = 5, acc = .7) {
+    constructor(hull = 200, firepower = 5, acc = .7, shieldChance = .7) {
         this.hull = hull
         this.firepower = firepower
         this.acc = acc
         this.defeated = false
         this.kills = 0
         this.victories = 0
+        this.missiles = 3
+        this.missilePower = 15
+        this.useMissle = false
+        this.shieldChance = shieldChance
+        this.shields = true
+        this.shieldValue = Math.floor(Math.random() * 6) + 1
     }
-    attack(alienShip) {
+    attack(target) {
         let index = Math.random()
         if (index <= this.acc) {
             console.log('You have hit!');
-            alienShip.hull -= this.firepower
+            if (player.useMissle) {
+                target.hull -= this.missilePower
+            } else {
+                target.hull -= this.firepower
+            }
         } else {
             console.log("You Missed")
             // console.log(index, this.acc)
@@ -21,6 +34,14 @@ class PlayerShip {
     powerPUp() {
         this.firepower += 1
     }
+}
+
+//Code created by Jeanette C
+function randomNum(min, max) {
+    return Math.floor(Math.random() * (max - min) + min)
+}
+function randomNum(min, max) {
+    return Math.round(Math.random() * (max - min) + min) / 10
 }
 
 // Declare AlienShip Class
@@ -32,13 +53,28 @@ class AlienShip {
     }
     attack(PlayerShip) {
         let index = Math.random()
-        if (index <= this.acc) {
-            console.log('Alien has hit!');
-            PlayerShip.hull -= this.firepower
+
+        if (index > PlayerShip.shieldChance) {
+            if (PlayerShip.shields) {
+                if (index <= this.acc) {
+                    PlayerShip.shieldValue -= this.firepower
+                    shieldsDisplay.textContent = "Shields: " + player.shieldValue
+                    if (PlayerShip.shieldValue <= 0) {
+                        alert('Your shields are down!');
+                        PlayerShip.shields = false
+                    }
+                }
+            }
         } else {
-            console.log("They Missed")
-            // console.log(index, this.acc)
+            if (index <= this.acc) {
+                console.log('Alien has hit!');
+                PlayerShip.hull -= this.firepower
+            } else {
+                console.log("They Missed")
+                // console.log(index, this.acc)
+            }
         }
+
     }
     powerAUp() {
         this.firepower += 1
@@ -64,6 +100,13 @@ let pDiv = document.getElementById('pStat')
 let pHull = document.createElement('span')
 pHull.textContent = player.hull
 pDiv.appendChild(pHull)
+let missile = document.createElement('p')
+missile.textContent = "Missiles: " + player.missiles
+pDiv.appendChild(missile)
+let shieldsDisplay = document.createElement("p")
+shieldsDisplay.textContent = "Shields: " + player.shieldValue
+pDiv.appendChild(shieldsDisplay)
+
 
 //send first alien ship stats to screen
 let aDiv = document.getElementById("aStat")
@@ -73,26 +116,27 @@ let aAcc = document.getElementById("a3")
 aHull.textContent = alienShips[0].hull
 aFire.textContent = alienShips[0].firepower
 aAcc.textContent = alienShips[0].acc
+
 //this method makes the player and the first alien ship do battle
-const fight = () => {
-    retreat.disabled = true
+const fight = (input) => {
+
     if (player.hull > 0) {
         pHull.textContent = player.hull
         console.log("Player is firing...")
-        player.attack(alienShips[0])
-        console.log("AlienShip Integrity is at ", alienShips[0].hull)
-        aHull.textContent = alienShips[0].hull
-        aFire.textContent = alienShips[0].firepower
-        aAcc.textContent = alienShips[0].acc
+        player.attack(input)
+        console.log("AlienShip Integrity is at ", input.hull)
+        aHull.textContent = input.hull
+        aFire.textContent = input.firepower
+        aAcc.textContent = input.acc
     } else {
         console.log("Player Destroyed!")
         pHull.textContent = player.hull
         player.defeated = true
         endGame()
     }
-    if (alienShips[0].hull > 0) {
+    if (input.hull > 0) {
         console.log("Alien is firing...")
-        alienShips[0].attack(player)
+        input.attack(player)
         console.log("PlayerShip Integrity is at ", player.hull)
         pHull.textContent = player.hull
     } else {
@@ -105,7 +149,7 @@ const fight = () => {
             endGame()
         } else if (alienShips.length >= 0) {
             alert("Another ship is moving into position, prepare to retreat or open fire.")
-            retreat.disabled = false
+
         }
     }
     pHull.textContent = player.hull
@@ -120,47 +164,89 @@ const endGame = () => {
         alert("You have made a hasty retreat. Humanity loses this day!")
     } else if (!alienShips.length) {
         alert("Well done Captain! You have saved us all!")
-        attack.disabled = true
-        retreat.disabled = true
-        restart.disabled = false
         player.victories += 1
     }
 }
 //declaring variables for buttons
-let attack = document.getElementById("shoot")
-let retreat = document.getElementById('retreat')
-let restart = document.getElementById("restart")
 
-//dissabling restart and retreat buttons on load
-restart.disabled = true
-retreat.disabled = true
+let enterButton = document.getElementById("decide")
 
-//setting event listeners for buttons
-attack.addEventListener('click', (evt) => {
-    fight()
+enterButton.addEventListener("click", (evt) => {
+    collectInput()
+    action()
 })
 
-//retreate causes buttons to dim except for restart
-retreat.addEventListener('click', (evt) => {
-    player.defeated = true
-    attack.disabled = true
-    retreat.disabled = true
-    restart.disabled = false
-    endGame()
+function collectInput() {
+    input = document.getElementById("input").value.toLowerCase();
+}
 
-})
 
-//creates new aliens and pushes them into array for a new game, also resets player stats
-restart.addEventListener("click", (evt) => {
-    makeShips()
-    //increase player power for each time they win
-    for (let i = 0; i >= player.victories; i++) {
-        player.powerPUp
+
+/*possible actions user can take:
+r === Retreat
+m === Missle
+1 === Array 0
+2 === Array 1
+3 === Array 2
+4 === Array 3
+5 === Array 4
+6 === Array 5
+p1 === pod 1
+p2 === pod 2
+p3 === pod 3
+main === mothership 
+n === new wave
+*/
+
+const action = () => {
+    switch (input) {
+        case "r":
+            player.defeated = true
+            endGame()
+            break
+        case "m":
+            player.useMissle = true
+            alert("Your Missle is loaded! Now attack a target!")
+            break
+        case "1":
+            fight(alienShips[0])
+            break
+        case "2":
+            fight(alienShips[1])
+            break
+        case "3":
+            fight(alienShips[2])
+            break
+        case "4":
+            fight(alienShips[3])
+            break
+        case "5":
+            fight(alienShips[4])
+            break
+        case "6":
+            fight(alienShips[5])
+            break
+        case "p1":
+            //attack pod one
+            alert("p1")
+            break
+        case "p2":
+            //attack pod 2
+            alert("p2")
+            break
+        case "p3":
+            //attack pod 3
+            alert("p3")
+            break
+        case "main":
+            //attack main hull
+            alert("main")
+            break
+        case "n":
+            makeShips()
+            break
+        default:
+            alert("Not a valid input! Try again.")
     }
-    player.hull = 200
+}
 
-    //setting buttons so player can only attack or run
-    attack.disabled = false
-    retreat.disabled = false
-    restart.disabled = true
-})

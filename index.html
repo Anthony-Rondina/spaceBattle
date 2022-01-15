@@ -13,7 +13,25 @@
 <body>
     <div id="container">
         <div id="header"></div>
-        <div id="aside"></div>
+        <div id="aside">
+            <div id="commands">
+                <p>COMMAND LIST</p>
+                <p>r = Retreat</p>
+                <p>m = Use Missile</p>
+                <p>1 = 1st Ship</p>
+                <p>2 = 2nd Ship</p>
+                <p>3 = 3rd Ship</p>
+                <p>4 = 4th Ship</p>
+                <p>5 = 5th Ship</p>
+                <p>6 = 6th Ship</p>
+                <p>p1 = Pod 1</p>
+                <p>p2 = Pod 2</p>
+                <p>p3 = Pod 3</p>
+                <p>main = Mothership</p>
+                <p>n = New wave</p>
+            </div>
+
+        </div>
         <div id="main">
             <div id="display">
                 <div id="pStat">
@@ -23,7 +41,7 @@
                 <div id="aStat">
                     <p>Current Target</p>
                     <span id="aStats">Hull Integrity: </span><span id="a1"></span>
-                    <span>FirePower: </span><span id="a2"></span>
+                    <p>FirePower: </p><span id="a2"></span>
                     <span>Accuracy: </span><span id="a3"></span>
                 </div>
                 <div id="pShip">
@@ -46,9 +64,12 @@
             <img class="hidden" src="https://i.imgur.com/zkFLdZe.png" alt="" id="alienShip5">
         </div>
         <div id="footer">
-            <button id="shoot">Attack</button>
+            <label for="input"></label>
+            <input id="input" type="text">
+            <button id="decide">Enter</button>
+            <!-- <button id="shoot">Attack</button>
             <button id="retreat">Retreat</button>
-            <button id="restart">Start Over</button>
+            <button id="restart">Start Over</button> -->
         </div>
     </div>
 </body>
