@@ -27,7 +27,7 @@ background-color:  #000 ;
     background-color:rgba(69, 81, 70, 0.7);
     border-radius: 15%;
     border: solid 5px rgba(112, 112, 113, 0.9);
-    width: 90%;
+    width: 95%;
     height: 55%;  
     color: white;
     font-size: 1.3rem;
@@ -137,4 +137,16 @@ button {
     min-height: 35%;
     font-size: 2rem;
     display: inline;
+    background-color: rgb(28, 27, 27);
+    border-color: yellow;
+    color: yellow;
+}
+
+input {
+    height: 33%;
+    width: 40%;
+    font-size: 2rem;
+    background-color: #000;
+    border-color: yellow;
+    color: yellow;
 }
