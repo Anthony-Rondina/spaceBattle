@@ -28,14 +28,15 @@ background-color:  #000 ;
     border-radius: 15%;
     border: solid 5px rgba(112, 112, 113, 0.9);
     width: 95%;
-    height: 55%;  
+    height: 65%;  
     color: white;
     font-size: 1.3rem;
     margin-top: 10px
 }
 #commands {
-    text-align: left;
-    margin-left: 30%;
+    text-align: center;
+    margin-left: 10%;
+    margin-top: 10%;
 }
 #main{
     margin-top: 10px;
@@ -151,3 +152,9 @@ input {
     border-color: yellow;
     color: yellow;
 }
+
+td, th {
+    border: 1px solid #ccc;
+    /* border-width border-style border-color */
+}
+
