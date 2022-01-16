@@ -112,7 +112,7 @@ const makeShips = () => {
             alienShips.push(alien)
             //make computer stronger after battle
             if (player.victories > 0) {
-                alien.powerAup()
+                alien.powerAup
             }
             document.getElementById("alienShip" + i).classList.remove("hidden")
             document.getElementById("alienShip" + i).src = "https://i.imgur.com/zkFLdZe.png"
