@@ -133,7 +133,7 @@ background-color:  #000 ;
     display: none;
 }
 button {
-    width: 30%;
+    width: 15%;
     min-height: 35%;
     font-size: 2rem;
     display: inline;
@@ -143,6 +143,7 @@ button {
 }
 
 input {
+    margin-left: 25%;
     height: 33%;
     width: 40%;
     font-size: 2rem;

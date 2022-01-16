@@ -59,14 +59,21 @@ class AlienShip {
 
         if (PlayerShip.shields) {
             if (index <= this.acc) {
-                if (index >= PlayerShip.shieldChance) {
+                if (index <= PlayerShip.shieldChance) {
                     PlayerShip.shieldValue -= this.firepower
                     shieldsDisplay.textContent = "Shields: " + player.shieldValue
                     if (PlayerShip.shieldValue <= 0) {
                         alert('Your shields are down!');
                         PlayerShip.shields = false
+                        shieldsDisplay.textContent = "Shields: 0"
                     }
+                } else {
+                    console.log("Shield failed to help and you take damage!")
+                    PlayerShip.hull -= this.firepower
                 }
+            } else {
+                console.log("They Missed")
+
             }
         } else {
             if (index <= this.acc) {
