@@ -162,3 +162,10 @@ td, th {
     text-decoration: underline;
     font-weight: bold;
 }
+
+::placeholder{
+    color: yellow;
+    opacity: .6;
+    font-size: 1.2rem;
+    text-align: center;
+}
