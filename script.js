@@ -241,8 +241,10 @@ const fightMotherShip = (input) => {
         let index = Math.floor(Math.random() * 3)
         if (index > 1) {
             for (let i = 1; i <= index; i++) {
-                motherShip[i].attack(player)
-                alert("Weapon pod " + i + " is also attacking!")
+                if (motherShip[i].hull > 0) {
+                    motherShip[i].attack(player)
+                    alert("Weapon pod " + i + " is also attacking!")
+                }
             }
         }
         console.log("PlayerShip Integrity is at ", player.hull)
