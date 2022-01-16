@@ -473,7 +473,8 @@ const action = () => {
             makeShips()
             break
         case "re":
-            if (!alienShips.length) {
+
+            if (!alienShips.length && motherShip[0].hull <= 0 && motherShip[1].hull <= 0 && motherShip[2].hull <= 0 && motherShip[3].hull <= 0) {
                 player.shields = true
                 player.shieldValue = Math.floor(Math.random() * 6) + 1
                 shieldsDisplay.textContent = "Shields: " + player.shieldValue
