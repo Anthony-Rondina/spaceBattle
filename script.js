@@ -1,6 +1,5 @@
 let input = ''
 
-
 //Declare Playership Class
 class PlayerShip {
     constructor(hull = 20, firepower = 5, acc = .7, shieldChance = .7) {
@@ -34,10 +33,10 @@ class PlayerShip {
         }
     }
     powerPUp() {
-        this.firepower += 1
+        this.hull += 1
     }
 }
-
+player = new PlayerShip()
 //Code created by Jeanette C
 function randomNum(min, max) {
     return Math.floor(Math.random() * (max - min) + min)
@@ -87,7 +86,7 @@ class AlienShip {
 
     }
     powerAUp() {
-        this.firepower += 1
+        this.hull += 1
     }
 }
 
@@ -111,7 +110,13 @@ const makeShips = () => {
         for (let i = 0; i < index; i++) {
             alien = new AlienShip
             alienShips.push(alien)
+            //make computer stronger after battle
+            if (player.victories > 0) {
+                alien.powerAup()
+            }
             document.getElementById("alienShip" + i).classList.remove("hidden")
+            document.getElementById("alienShip" + i).src = "https://i.imgur.com/zkFLdZe.png"
+
         }
         aHull.textContent = alienShips[0].hull
         aFire.textContent = alienShips[0].firepower
@@ -129,7 +134,7 @@ const makeShips = () => {
 }
 makeShips()
 //Creating player instance
-player = new PlayerShip()
+
 
 // send player ship's info to screen
 let pDiv = document.getElementById('pStat')
@@ -171,10 +176,26 @@ const fight = (input) => {
         endGame()
     }
     if (input.hull > 0) {
+        let index = Math.floor(Math.random() * 3)
         console.log("Target is firing...")
         input.attack(player)
+        //multiple ships attack!
+        if (index > 1) {
+            for (let i = 1; i <= index; i++) {
+                if (alienShips[i].hull > 0) {
+                    alienShips[i].attack(player)
+                    alert("Alien Ship " + i + " is also attacking!")
+                }
+            }
+        }
         console.log("PlayerShip Integrity is at ", player.hull)
         pHull.textContent = player.hull
+        if (player.hull <= 0) {
+            console.log("USS Assembly Destroyed!")
+            pHull.textContent = player.hull
+            player.defeated = true
+            endGame()
+        }
     } else {
         alert("Target destroyed!")
         alienShips.shift()
@@ -212,20 +233,30 @@ const fightMotherShip = (input) => {
         aHull.textContent = input.hull
         aFire.textContent = input.firepower
         aAcc.textContent = input.acc
-    } else {
-        console.log("Player Destroyed!")
-        pHull.textContent = player.hull
-        player.defeated = true
-        endGame()
     }
     if (input.hull > 0) {
         console.log("Target is firing...")
         input.attack(player)
+        //multiple ships attack!
+        let index = Math.floor(Math.random() * 3)
+        if (index > 1) {
+            for (let i = 1; i <= index; i++) {
+                motherShip[i].attack(player)
+                alert("Weapon pod " + i + " is also attacking!")
+            }
+        }
         console.log("PlayerShip Integrity is at ", player.hull)
         pHull.textContent = player.hull
+        if (player.hull <= 0) {
+            console.log("USS Assembly Destroyed!")
+            pHull.textContent = player.hull
+            player.defeated = true
+            endGame()
+        }
     } else {
         alert("Target destroyed!")
         player.kills += 1
+        medalsAndPowerUps()
         killCount.textContent = "Kills: " + player.kills
         missile.textContent = "Missiles: " + player.missiles
         damageCount++
@@ -262,11 +293,21 @@ const fightMotherShip = (input) => {
 }
 
 const endGame = () => {
+    if (hordeMode) {
+        wipeBoard()
+        //now that the board is clean, make new ships
+        makeShips()
+        player.shields = true
+        player.shieldValue = Math.floor(Math.random() * 6) + 1
+        shieldsDisplay.textContent = "Shields: " + player.shieldValue
+    }
     if (player.defeated) {
         alert("You have made a hasty retreat. Humanity loses this day!")
     } else if (!alienShips.length) {
         alert("Well done Captain! You have saved us all!")
         player.victories += 1
+        //make player stronger after battle
+        player.powerPUp()
         alert("The battle is over, enter code to recharge your shields.")
 
     }
@@ -301,24 +342,25 @@ const medalsAndPowerUps = () => {
             break
         case 15:
             alert("🥇 Awarded for 15 kills!")
-            player.hull = 20
+            player.hull += 8
             player.missiles += 2
             missile.textContent = "Missiles: " + player.missiles
             medals.textContent = "Medals: 🥉🥈🥇"
             break
         case 20:
-            alert("🏅 Awarded for 20 kills!")
-            player.hull = 20
+            alert("🎖 Awarded for 20 kills!")
+            player.hull += 10
             player.missiles += 3
             missile.textContent = "Missiles: " + player.missiles
-            medals.textContent = "Medals: 🥉🥈🥇🏅"
+            medals.textContent = "Medals: 🥉🥈🥇🎖"
             break
         case 25:
-            alert("🎖 Awarded for 25 kills!")
-            player.hull = 20
+            alert("👑 Awarded for 25 kills!")
+            player.hull += 20
             player.missiles += 10
             missile.textContent = "Missiles: " + player.missiles
-            medals.textContent = "Medals: 🥉🥈🥇🏅🎖"
+            medals.textContent = "Medals: 🥉🥈🥇🎖👑"
+            player.firepower += 3
             break
         default:
             break
@@ -415,7 +457,7 @@ const action = () => {
                 alert("Weapon Pod 3 is already destroyed!")
             }
             break
-        case "main":
+        case "p4":
             if (motherShip[0].hull > 0 && motherShip[1].hull > 0 && motherShip[2].hull > 0) {
                 alert("Cannot attack the Mothership until all weapon pods are destroyed!")
             } else {
@@ -423,18 +465,61 @@ const action = () => {
             }
             break
         case "n":
+            //run a cleaning script to reset everything
+            wipeBoard()
+            //now that the board is clean, make new ships
             makeShips()
             break
         case "re":
             if (!alienShips.length && !motherShip.length) {
                 player.shields = true
+                player.shieldValue = Math.floor(Math.random() * 6) + 1
+                shieldsDisplay.textContent = "Shields: " + player.shieldValue
                 alert("Shields Recharged! Now choose your target.")
             } else {
                 alert("Can't recharge shields now! You must wait for the battle to end!")
             }
             break
+        case "horde":
+            if (!hordeMode) {
+                horde()
+                alert("Horde Mode Enabled!")
+            } else {
+                hordeMode = false
+                wipeBoard()
+                makeShips()
+                alert("The horde has passed!")
+            }
+            break
+        case "s":
+            wipeBoard()
+            player.hull = 20
+            player.kills = 0
+            player.victories = 0
+            player.shieldValue = Math.floor(Math.random() * 6) + 1
+            player.shields = true
+            player.missiles = 3
+            medals.textContent = "Medals: "
+            killCount.textContent = "Kills: " + player.kills
+            shieldsDisplay.textContent = "Shields: " + player.shieldValue
+            pHull.textContent = player.hull
+            makeShips()
+            break
         default:
             alert("Not a valid input! Try again.")
     }
 }
+let hordeMode = false
+const horde = () => {
+    wipeBoard()
+    makeShips()
+    hordeMode = true
+}
 
+const wipeBoard = () => {
+    motherShip = []
+    alienShips = []
+    for (let i = 0; i < 6; i++) {
+        document.getElementById("alienShip" + i).classList.add("hidden")
+    }
+}
